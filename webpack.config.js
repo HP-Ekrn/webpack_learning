@@ -18,13 +18,28 @@ const common = {
 	output:{
 		path:PATHS.build,
 		filename: "bundle.js"
+	},
+	resolve:{
+		extensions:['','.js','.jsx']
+	},
+	module:{
+		loaders:[
+			{
+				test: /\.css$/,loaders:['style','css'],include: PATHS.app
+			},
+			{
+				test: /\.jsx?$/, loaders: ['babel?cacheDirectory'], include: PATHS.app
+			}
+		]
 	}
 }
 
 const webpack = require("webpack");
+const NpmInstallPlugin = require("npm-install-webpack-plugin");
 
 if(TARGET === 'start' || !TARGET){
 	module.exports = merge(common,{
+		devtool:'eval-source-map',
 		devServer:{
 			contentBase: PATHS.build,
 			historyApiFallback:true,
@@ -36,7 +51,8 @@ if(TARGET === 'start' || !TARGET){
 			port: process.env.PORT
 		},
 		plugins:[
-			new webpack.HotModuleReplacementPlugin()
+			new webpack.HotModuleReplacementPlugin(),
+			new NpmInstallPlugin({ save:true })
 		]
 	});
 }
