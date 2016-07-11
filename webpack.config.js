@@ -28,7 +28,12 @@ const common = {
 				test: /\.css$/,loaders:['style','css'],include: PATHS.app
 			},
 			{
-				test: /\.jsx?$/, loaders: ['babel?cacheDirectory'], include: PATHS.app
+				test: /\.jsx?$/, loader:"babel"
+				, query:{
+					cacheDirectory: true,
+					presets:['react','es2015']
+				}
+				, include: PATHS.app
 			}
 		]
 	}
